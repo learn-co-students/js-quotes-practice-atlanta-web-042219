@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault()
 
     // console.log("form tag = ", form)
-    console.log("submit target = ", e.target)
+    // console.log("submit target = ", e.target)
 
     let newQuoteInput = document.getElementById('new-quote')
     let newAuthorInput = document.getElementById('author')
@@ -119,9 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault()
       likeQuote(e)
     } 
-    // else if (e.target === document.querySelector('#new-quote-form button')) {
-    //   addNewQuote(e.target.parentElement)
-    // }
   }
 
 // ----------------------------------------------------------- //
