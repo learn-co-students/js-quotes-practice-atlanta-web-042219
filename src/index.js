@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ----------------------------------------------------------- //
 
   function handleEvents(e) {
-    console.log('handleEvents() target', e.target)
+    // console.log('handleEvents() target', e.target)
 
     if (e.target.className === 'btn-danger'){
       e.preventDefault()
