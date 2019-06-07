@@ -1,16 +1,20 @@
-// Get something on the page  
-   // - check if I have to return something from fetch
-   // - look to see what elements I "need" - what do I have to manipulate? 
-   // - which of these elements need an event listener attached
+// How should I think about building something with JS?
+// 1st Objective: Get Something on the Page  
+  /*
+    - Check if I have to return something from fetch
+    - Look to see what elements I "need" - what elements do I have to manipulate? 
+    - Which of these elements need to have an event listener attached?
+ */
 
 const quoteContainer = document.querySelector('#quote-list')
 const form = document.querySelector('#new-quote-form')
 
-// const input1 = document.querySelector('#new-quote')
-// Use this as an alternative to getting the value in a form without going through the event
+/* const input1 = document.querySelector('#new-quote')
+   -- Use this as an alternative to getting the value in a form without going through the event */
 
 document.addEventListener('DOMContentLoaded', init)
 document.addEventListener('click', handleEvent)
+// You'll this second event if you are adding elements to the DOM using innerHTML like in the displayQuote function.
 
 function init() {
     fetch('http://localhost:3000/quotes')
@@ -37,7 +41,7 @@ function displayQuote(quote) {
 
 function addQuote(e) {
     e.preventDefault()
-    // console.log("Form has been clicked: ", e.target.author.value)
+    // console.log("Form has been clicked: ", e)
    //e.target['new-quote'].value
    //e.target.author.value
 
