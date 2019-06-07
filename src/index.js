@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const baseURL = `http://localhost:3000/quotes`
   const form = document.getElementById('new-quote-form')
   
+  // form.addEventListener('submit', console.log("this"))
   form.addEventListener('submit', addNewQuote)
+  document.addEventListener('click', handleEvents)
 
   fetch(baseURL)
   .then(res => res.json())
@@ -24,13 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
 // ----------------------------------------------------------- //
 
   function addNewQuote(e) {
-    e.preventDefault();
+    e.preventDefault()
+
+    // console.log("form tag = ", form)
+    console.log("submit target = ", e.target)
+
     let newQuoteInput = document.getElementById('new-quote')
     let newAuthorInput = document.getElementById('author')
 
-    // console.log(e.target)
-
-    fetch(baseURL,{
+    fetch(baseURL, {
       method: 'POST',
       headers: {
         'Content-Type':'application/json',
@@ -45,9 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // .then(console.log)
     .then(addQuote)
 
-    // newQuoteInput.value = ''
-    // newAuthorInput.value = ''
-    e.target.reset()
+    newQuoteInput.value = ''
+    newAuthorInput.value = ''
   }
 
 // ----------------------------------------------------------- //
@@ -107,13 +110,18 @@ document.addEventListener('DOMContentLoaded', () => {
 // ----------------------------------------------------------- //
 
   function handleEvents(e) {
-    e.preventDefault()
+    console.log('handleEvents() target', e.target)
 
-    if(e.target.className === 'btn-danger'){
+    if (e.target.className === 'btn-danger'){
+      e.preventDefault()
       deleteQuote(e)
     } else if (e.target.className === 'btn-success'){
+      e.preventDefault()
       likeQuote(e)
-    }
+    } 
+    // else if (e.target === document.querySelector('#new-quote-form button')) {
+    //   addNewQuote(e.target.parentElement)
+    // }
   }
 
 // ----------------------------------------------------------- //
@@ -132,9 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ----------------------------------------------------------- //
 
-  function likeQuote(e) {
-    console.log(e.target)
-  }
+  // function likeQuote(e) {
+  //   console.log(e.target)
+  // }
 
 // -FINAL END BRACKET ---------------------------------------- //
 
