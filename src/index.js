@@ -1,3 +1,89 @@
+const quoteContainer = document.querySelector('#quote-list')
+const form = document.querySelector('#new-quote-form')
+
+document.addEventListener('DOMContentLoaded', ()=> {
+    getQuotes()
+    document.addEventListener('click', handleLikeEvent)
+    document.addEventListener('click', handleDeleteQuote)
+})  
+
+function getQuotes() {
+    fetch("http://localhost:3000/quotes")
+    .then(res => res.json())
+    .then(res => 
+        {res.forEach(quote => displayQuote(quote))
+        })
+        form.addEventListener("submit", addQuote)
+} 
+
+function displayQuote(quote) {
+    quoteContainer.innerHTML += `<li class='quote-card' data-id="${quote.id}">
+    <blockquote class="blockquote">
+    <p class="mb-0">${quote.quote}</p>
+    <footer class="blockquote-footer">${quote.author}</footer>
+    <br>
+    <button class='btn-success'>Likes: <span>${quote.likes}</span></button>
+    <button class='btn-danger'>Delete</button>
+    </blockquote>
+    </li>`
+}
+
+function addQuote(e) {
+    e.preventDefault()
+
+   let quote = {
+       author: e.target.author.value,
+       quote: e.target['new-quote'].value
+   }
+
+    fetch('http://localhost:3000/quotes', {
+        method: 'POST', 
+        body: JSON.stringify(quote), 
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(res => {
+        displayQuote(res)
+    })
+}
+
+function handleLikeEvent(e) {
+    if (e.target.className === 'btn-success') {
+        let likes = e.target.innerText.split(" ")[1]
+        let likeCount = parseInt(likes)
+        let likeBox = e.target.querySelector('span')
+        likeBox.innerHTML = `${++likeCount}`
+        
+        let id = e.target.parentElement.parentElement.dataset.id 
+
+        fetch(`http://localhost:3000/quotes/${id}`, {
+          method: 'PATCH',
+            body: JSON.stringify({'likes': `${likeCount}`}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            displayQuote(res)
+        })
+    } 
+}
+
+// Need to fix this function
+// function handleDeleteQuote(e) {
+//     if (e.target.className === 'btn-danger') {
+//         let id = e.target.parentElement.parentElement.dataset.id
+
+//         fetch(`http://localhost:3000/quotes/${id}`, {method: 'DELETE')
+//             }
+//         }       
+//     }
+// }
+
+
 // const form = document.getElementById('new-quote-form')
 // const quoteInput = document.getElementById('new-quote')
 // const authorInput = document.getElementById('author')
@@ -111,74 +197,3 @@
 //             </blockquote>
 //         </li>`
 // }
-
-const quoteContainer = document.querySelector('#quote-list')
-const form = document.querySelector('#new-quote-form')
-
-document.addEventListener('DOMContentLoaded', init)
-document.addEventListener('click', handleLikeEvent)
-
-function init() {
-    fetch('http://localhost:3000/quotes')
-    .then(res => res.json())
-    .then(res => {
-        res.forEach(quote => displayQuote(quote))
-    })  
-    form.addEventListener('submit', addQuote)
-}
-
-function displayQuote(quote) {
-    quoteContainer.innerHTML += `<li class='quote-card' data-id="${quote.id}">
-    <blockquote class="blockquote">
-    <p class="mb-0">${quote.quote}</p>
-    <footer class="blockquote-footer">${quote.author}</footer>
-    <br>
-    <button class='btn-success'>Likes: <span>${quote.likes}</span></button>
-    <button class='btn-danger'>Delete</button>
-    </blockquote>
-    </li>`
-}
-
-function addQuote(e) {
-    e.preventDefault()
-
-   let quote = {
-       author: e.target.author.value,
-       quote: e.target['new-quote'].value
-   }
-
-    fetch('http://localhost:3000/quotes', {
-        method: 'POST', 
-        body: JSON.stringify(quote), 
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(res => res.json())
-    .then(res => {
-        displayQuote(res)
-    })
-}
-
-function handleLikeEvent(e) {
-    if (e.target.className === 'btn-success') {
-        let likes = e.target.innerText.split(" ")[1]
-        let likeCount = parseInt(likes)
-        let likeBox = e.target.querySelector('span')
-        likeBox.innerHTML = `${++likeCount}`
-        
-        let id = e.target.parentElement.parentElement.dataset.id 
-
-        fetch(`http://localhost:3000/quotes/${id}`, {
-          method: 'PATCH',
-            body: JSON.stringify({'likes': `${likeCount}`}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(res => {
-            displayQuote(res)
-        })
-    } 
-}
